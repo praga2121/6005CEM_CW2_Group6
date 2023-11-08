@@ -31,11 +31,11 @@
 
     	<form action="register.php" method="POST">
           <div class="form-group has-feedback">
-            <input type="text" class="form-control" name="firstname" placeholder="Firstname" value="<?php echo (isset($_SESSION['firstname'])) ? $_SESSION['firstname'] : '' ?>" required>
+            <input type="text" class="form-control" name="firstname" placeholder="Firstname" pattern="[a-z A-Z]+" oninvalid="setCustomValidity('Please enter alphabets only. ')" value="<?php echo (isset($_SESSION['firstname'])) ? $_SESSION['firstname'] : '' ?>" required>
             <span class="glyphicon glyphicon-user form-control-feedback"></span>
           </div>
           <div class="form-group has-feedback">
-            <input type="text" class="form-control" name="lastname" placeholder="Lastname" value="<?php echo (isset($_SESSION['lastname'])) ? $_SESSION['lastname'] : '' ?>"  required>
+            <input type="text" class="form-control" name="lastname" placeholder="Lastname" pattern="[a-z A-Z]+" oninvalid="setCustomValidity('Please enter alphabets only. ')" value="<?php echo (isset($_SESSION['lastname'])) ? $_SESSION['lastname'] : '' ?>"  required>
             <span class="glyphicon glyphicon-user form-control-feedback"></span>
           </div>
       		<div class="form-group has-feedback">
@@ -43,7 +43,7 @@
         		<span class="glyphicon glyphicon-envelope form-control-feedback"></span>
       		</div>
           <div class="form-group has-feedback">
-            <input type="password" class="form-control" name="password" placeholder="Password" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters" required>
+            <input type="password" class="form-control" name="password" placeholder="Password" id="exampleInputPassword1" pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*()_+{}\[\]:;<>,.?~\\|\-]).{8,}$" title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters" required>
             <span class="glyphicon glyphicon-lock form-control-feedback"></span>
           </div>
           <div class="form-group has-feedback">
