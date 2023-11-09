@@ -43,6 +43,7 @@
                   <th class="hidden"></th>
                   <th>Date</th>
                   <th>Buyer Name</th>
+                  <th>Phone Number</th>
                   <th>Transaction#</th>
                   <th>Amount</th>
                   <th>Full Details</th>
@@ -67,6 +68,7 @@
                             <td class='hidden'></td>
                             <td>".date('M d, Y', strtotime($row['sales_date']))."</td>
                             <td>".$row['firstname'].' '.$row['lastname']."</td>
+                            <td>".$row['contact_info']."</td>
                             <td>".$row['pay_id']."</td>
                             <td>RM ".number_format($total, 2)."</td>
                             <td><button type='button' class='btn btn-default btn-sm btn-flat transact' data-id='".$row['salesid']."'><i class='fa fa-search'></i> View</button></td>
