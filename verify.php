@@ -1,45 +1,44 @@
 <?php
-	include 'includes/session.php';
-	$conn = $pdo->open();
+include 'includes/session.php';
+$conn = $pdo->open();
 
-	if(isset($_POST['login'])){
-		
-		$email = $_POST['email'];
-		$password = $_POST['password'];
+if (isset($_POST['login'])) {
+    $email = $_POST['email'];
+    $password = $_POST['password'];
 
-		try{
+    try {
+        $stmt = $conn->prepare("SELECT *, COUNT(*) AS numrows FROM users WHERE email = :email");
+        $stmt->execute(['email' => $email]);
+        $row = $stmt->fetch();
+        if ($row['numrows'] > 0) {
+            if (password_verify($password, $row['password'])) {
+                if ($row['type']) {
+                    $_SESSION['admin'] = $row['id'];
+                } else {
+                    $_SESSION['user'] = $row['id'];
+                }
 
-			$stmt = $conn->prepare("SELECT *, COUNT(*) AS numrows FROM users WHERE email = :email");
-			$stmt->execute(['email'=>$email]);
-			$row = $stmt->fetch();
-			if($row['numrows'] > 0){
-				if(password_verify($password, $row['password'])){
-					if($row['type']){
-						$_SESSION['admin'] = $row['id'];
-					}
-					else{
-						$_SESSION['user'] = $row['id'];
-					}
-				}
-				else{
-					$_SESSION['error'] = 'Incorrect Password';
-				}
-			}
-			else{
-				$_SESSION['error'] = 'Email not found';
-			}
-		}
-		catch(PDOException $e){
-			echo "There is some problem in connection: " . $e->getMessage();
-		}
+                // Regenerate session ID to prevent session fixation
+                session_regenerate_id();
 
-	}
-	else{
-		$_SESSION['error'] = 'Input login credentails first';
-	}
+                // Set a session timeout (e.g., 30 minutes)
+                $_SESSION['timeout'] = time() + 1800; // 30 minutes
 
-	$pdo->close();
+            } else {
+                $_SESSION['error'] = 'Incorrect Password';
+            }
+        } else {
+            $_SESSION['error'] = 'Email not found';
+        }
+    } catch (PDOException $e) {
+        echo "There is some problem in connection: " . $e->getMessage();
+    }
+} else {
+    $_SESSION['error'] = 'Input login credentials first';
+}
 
-	header('location: login.php');
+$pdo->close();
 
+header('location: login.php');
 ?>
+
